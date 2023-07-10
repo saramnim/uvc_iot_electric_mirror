@@ -8,7 +8,7 @@ const temperatureRoutes = require("./src/routes/temp");
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
-
+// 몽고디비 안불러와짐!
 mongoose
   .connect("mongodb+srv://hyejis:12345678!@cluster0.vc03ost.mongodb.net/", {
     useNewUrlParser: true,
