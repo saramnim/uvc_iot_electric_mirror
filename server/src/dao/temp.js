@@ -1,12 +1,12 @@
-// dao/tempDAO.js
-const temp = require("../models/temp");
+const Temp = require("../models/temp");
 
 class tempDAO {
   static async getTemps() {
     try {
-      const temps = await temp.find({
-        collection: "test_01",
+      const temps = await Temp.find({
+        collection: "seneor",
       });
+      console.log(temps);
       return temps;
     } catch (error) {
       throw new Error("Failed to fetch temps from database");
