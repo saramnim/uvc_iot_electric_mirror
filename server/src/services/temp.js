@@ -1,13 +1,12 @@
 const tempDAO = require("../dao/temp");
 
 class TempService {
-  static async getTemperatures() {
+  static async getTemp() {
     try {
-      const temp = await tempDAO.getTemp();
-      console.log("Temperature Data:", temp);
+      const temp = await tempDAO.getTemps();
       return temp;
     } catch (error) {
-      throw new Error("Failed to fetch temperatures from database");
+      throw new Error("Failed to fetch temps from database-services");
     }
   }
 }
