@@ -23,7 +23,7 @@ const startCamera = (videoRef, setImage) => {
 
 const loadImage = async (setImage) => {
   try {
-    const response = await fetch("/logo.png");
+    const response = await fetch("/picure.jpg");
     const blob = await response.blob();
     setImage(URL.createObjectURL(blob));
   } catch (error) {
@@ -33,8 +33,8 @@ const loadImage = async (setImage) => {
 
 const tempData = async (setTemp) => {
   try {
-    const response = await axios.get("/temp");
-    console.log(response);
+    const response = await axios.get("http://localhost:8081/temp");
+    console.log(response.data);
     setTemp(response.data);
   } catch (error) {
     console.error("Failed to fetch temperature data:", error);
