@@ -3,9 +3,7 @@ const Temp = require("../models/temp");
 class tempDAO {
   static async getTemps() {
     try {
-      const temps = await Temp.find({
-        collection: "seneor",
-      });
+      const temps = await Temp.find();
       console.log(temps);
       return temps;
     } catch (error) {
