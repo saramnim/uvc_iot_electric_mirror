@@ -1,53 +1,64 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Back, Container, Video } from "../styles/camera";
+import { Back, Container, VideoBox, Video, Data, Poke } from "../styles/camera";
 import HomePage from "./Home";
 import { loadImage, startCamera, tempData } from "../services/cameraService";
+// import { getGif } from "../services/pokemon";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import html2canvas from "html2canvas";
+import saveAs from "file-saver";
 
 const Camera = () => {
+  const divRef = useRef < HTMLDivElement > null;
   const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [image, setImage] = useState(null);
+  // const canvasRef = useRef(null);
   const [temp, setTemp] = useState([]);
+  const [poke, setPoke] = useState("");
 
   useEffect(() => {
-    //   startCamera(videoRef, setImage);
-    //   loadImage(setImage);
+    const fetchData = async () => {
+      try {
+        // const pokeImg = await getGif();
+        const randomIndex = Math.floor(Math.random() * 649);
+        const pokeImg = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${randomIndex}.gif`;
+        setPoke(pokeImg);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchData();
     tempData(setTemp);
   }, []);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-
-    const drawLogo = () => {
-      if (image) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-        ctx.drawImage(image, 0, canvas.height - 50, 50, 50);
-      }
-    };
-
-    const interval = setInterval(drawLogo, 100);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [image]);
+  const captureImage = () => {
+    html2canvas(document.querySelector("#capture")).then((canvas) => {
+      canvas.toBlob((blob) => {
+        saveAs(blob, "captured-image.png");
+      });
+    });
+  };
 
   return (
     <Container>
-      <Video>
-        <video
-          ref={videoRef}
+      <Back to="/" element={<HomePage />}>
+        <FontAwesomeIcon icon={faArrowLeft} />
+      </Back>
+      <VideoBox id="capture">
+        <Video
           autoPlay
           playsInline
-          style={{ display: "none" }}
-        />
-        <canvas ref={canvasRef} width={640} height={480} />
-        <Back to="/" element={<HomePage />}>
-          뒤로가기
-        </Back>
-      </Video>
+          src="video/video1.mp4"
+          type="video/mp4"
+        ></Video>
+        <Poke src={poke} alt="poke" sizes="150px" />
+        <Data>
+          우리집 <br />
+          온도 = {temp.Temp}
+          <br />
+          습도 = {temp.Humidity}
+        </Data>
+      </VideoBox>
+      <button onClick={captureImage}>Capture</button>
     </Container>
   );
 };

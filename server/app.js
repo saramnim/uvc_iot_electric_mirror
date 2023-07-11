@@ -4,23 +4,23 @@ const http = require("http");
 const socketIO = require("socket.io");
 const RaspiCam = require("raspicam");
 const temperatureRoutes = require("./src/routes/temp");
-
+const cors = require("cors");
+const dotenv = require("dotenv");
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-// 몽고디비 안불러와짐
+dotenv.config();
+const { MONGO_URL } = process.env;
 mongoose
-  .connect(
-    "mongodb+srv://hyejis:12345678!@cluster0.vc03ost.mongodb.net/temp?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("Connected to MongoDB"))
   .catch((error) => console.error("Failed to connect to MongoDB:", error));
 
+app.use(cors());
 app.use(express.json());
 app.use("/temp", temperatureRoutes);
 
