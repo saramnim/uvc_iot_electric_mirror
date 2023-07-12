@@ -3,12 +3,14 @@ const mongoose = require("mongoose");
 const http = require("http");
 const socketIO = require("socket.io");
 const RaspiCam = require("raspicam");
-const temperatureRoutes = require("./src/routes/temp");
+const temp = require("./src/routes/temp");
+const weather = require("./src/routes/weather");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
+// const io = socketIO(server);
 
 dotenv.config();
 const { MONGO_URL } = process.env;
@@ -22,20 +24,26 @@ mongoose
 
 app.use(cors());
 app.use(express.json());
-app.use("/temp", temperatureRoutes);
+app.use(bodyParser.json());
+app.use("/temp", temp);
+app.use("/weather", weather);
 
 // const camera = new RaspiCam({
-//   mode: "photo",
+//   mode: "video",
 //   output: "-",
-//   encoding: "jpg",
+//   encoding: "mp4",
 //   timeout: 0, // 무한히 촬영
 // });
 
-// camera.on("read", (data) => {
-//   io.emit("imageData", data);
+// camera.on("read", (err, timestamp, filename) => {
+//   if (!err && filename) {
+//     const streamData = {
+//       type: "video",
+//       data: filename,
+//     };
+//     io.emit("stream", streamData);
+//   }
 // });
-
-// camera.start();
 
 // io.on("connection", (socket) => {
 //   console.log("클라이언트 연결");
@@ -44,6 +52,8 @@ app.use("/temp", temperatureRoutes);
 //     console.log("클라이언트 연결 종료");
 //   });
 // });
+
+// camera.start();
 
 const port = 8081;
 server.listen(port, () => {

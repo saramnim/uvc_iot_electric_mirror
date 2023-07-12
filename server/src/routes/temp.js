@@ -12,4 +12,15 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  try {
+    const { data } = req.body;
+    const tempData = { data };
+    const savedTemp = await TempService.createTemp(tempData);
+    res.status(201).json(savedTemp);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
