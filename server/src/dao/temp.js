@@ -4,7 +4,6 @@ class tempDAO {
   static async getTemps() {
     try {
       const temps = await Temp.find();
-      console.log(temps);
       return temps;
     } catch (error) {
       throw new Error("Failed to fetch temps from database");

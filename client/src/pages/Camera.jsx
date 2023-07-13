@@ -1,55 +1,57 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Back, Container, Video } from "../styles/camera";
-import HomePage from "./Home";
-import { loadImage, startCamera, tempData } from "../services/cameraService";
+import React, { useEffect, useRef } from "react";
 
 const Camera = () => {
   const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [image, setImage] = useState(null);
-  const [temp, setTemp] = useState([]);
 
   useEffect(() => {
-    //   startCamera(videoRef, setImage);
-    //   loadImage(setImage);
-    tempData(setTemp);
-  }, []);
+    const startStreaming = async () => {
+      const video = videoRef.current;
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+      try {
+        // 비디오 스트림 가져오기
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
 
-    const drawLogo = () => {
-      if (image) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-        ctx.drawImage(image, 0, canvas.height - 50, 50, 50);
+        // 비디오 요소에 스트림 연결
+        video.srcObject = stream;
+
+        // 비디오 재생
+        video.play();
+      } catch (error) {
+        console.error("Failed to start video streaming:", error);
       }
     };
 
-    const interval = setInterval(drawLogo, 100);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [image]);
+    startStreaming();
+  }, []);
 
   return (
-    <Container>
-      <Video>
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          style={{ display: "none" }}
-        />
-        <canvas ref={canvasRef} width={640} height={480} />
-        <Back to="/" element={<HomePage />}>
-          뒤로가기
-        </Back>
-      </Video>
-    </Container>
+    <div>
+      <video
+        ref={videoRef}
+        style={{ width: "100%", height: "auto" }}
+        autoPlay
+        muted
+      />
+    </div>
   );
 };
 
 export default Camera;
+
+// const Camera = () => {
+//   return (
+//     <div>
+//       <a
+//         href="http://192.168.0.72:8080/video_feed"
+//         target="_blank"
+//         rel="noreferrer"
+//       >
+//         Camera
+//       </a>
+//     </div>
+//   );
+// };
+
+// export default Camera;
