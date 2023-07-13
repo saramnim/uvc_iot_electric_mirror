@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { URL, Title } from "../styles/home";
 import Camera from "./Camera";
 import { getData } from "../services/weather";
+import Loading from "../components/Loading";
 
 const HomePage = () => {
   const [weather, setWeather] = useState(null);
@@ -26,7 +27,7 @@ const HomePage = () => {
   }, [TMP, PTY, POP]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (

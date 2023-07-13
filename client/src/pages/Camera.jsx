@@ -1,31 +1,4 @@
-// const Camera = () => {
-//   const videoRef = useRef(null);
-
-//   useEffect(() => {
-//     const startStreaming = async () => {
-//       const video = videoRef.current;
-//       try {
-//         const stream = await navigator.mediaDevices.getUserMedia({
-//           video: true,
-//         });
-//         video.srcObject = stream;
-//         video.play();
-//       } catch (error) {
-//         console.error("Failed to start video streaming:", error);
-//       }
-//     };
-//     startStreaming();
-//   }, []);
-
-//   return (
-//     <div>
-//       <video
-//         ref={videoRef}
-//         style={{ width: "100%", height: "auto" }}
-//         autoPlay
-//         muted
-//       />
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Back,
   Container,
@@ -34,38 +7,35 @@ import {
   Data,
   Poke,
   Capture,
+  Talk,
 } from "../styles/camera";
 import HomePage from "./Home";
-import { loadImage, startCamera, getData } from "../services/cameraService";
+import { getData } from "../services/cameraService";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import html2canvas from "html2canvas";
 import saveAs from "file-saver";
 import { pokeIf } from "../util/pokeIf";
+import Loading from "../components/Loading";
 
 const Camera = () => {
-  const videoRef = useRef(null);
   const [data, setData] = useState([]);
   const [poke, setPoke] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    getData(setData);
-  }, []);
+  const [talk, setTalk] = useState("");
 
   const temp = data.length > 1 ? data[1].value : 0;
   const humi = data.length > 0 ? data[0].value : 0;
-  // const temp = 30;
-  // const humi = 10;
 
   useEffect(() => {
     const fetchPoke = async () => {
       try {
-        // const randomIndex = Math.floor(Math.random() * 649);
         const randomIndex = pokeIf(temp, humi);
-        // const pokeImg = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${randomIndex}.gif`;
-        const pokeImg = `gif/${randomIndex}.gif`;
+        const pokeImg = `gif/${randomIndex[0]}.gif`;
+        const tell = randomIndex[1];
         setPoke(pokeImg);
+        setTalk(tell);
+        console.log(pokeIf(temp, humi, setPoke, setTalk));
       } catch (e) {
         console.error(e);
       }
@@ -84,7 +54,7 @@ const Camera = () => {
   }, [temp, humi]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // 로딩 상태를 표시하는 컴포넌트를 반환
+    return <Loading />;
   }
 
   const captureImage = () => {
@@ -106,11 +76,14 @@ const Camera = () => {
           <FontAwesomeIcon icon={faArrowLeft} />
         </Back>
         <VideoBox>
-          <Video autoPlay playsInline src="video/video1.mp4" type="video/mp4" />
-          {/* <video ref={videoRef} autoPlay playsInline /> */}
+          <Video
+            src="http://192.168.0.72:8000/stream.mjpg"
+            alt="Server Image"
+          />
           <Poke id="poke" src={poke} alt="poke" sizes="150px" />
+          <Talk>{talk}</Talk>
           <Data>
-            우리집 <br />
+            지금 우리집 <br />
             온도 = {temp}
             <br />
             습도 = {humi}
@@ -123,19 +96,3 @@ const Camera = () => {
 };
 
 export default Camera;
-
-// const Camera = () => {
-//   return (
-//     <div>
-//       <a
-//         href="http://192.168.0.72:8080/video_feed"
-//         target="_blank"
-//         rel="noreferrer"
-//       >
-//         Camera
-//       </a>
-//     </div>
-//   );
-// };
-
-// export default Camera;
