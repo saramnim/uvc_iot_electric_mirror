@@ -31,14 +31,14 @@ const loadImage = async (setImage) => {
   }
 };
 
-const tempData = async (setTemp) => {
+const getData = async (setTemp) => {
   try {
     const response = await axios.get("http://localhost:8081/temp");
-    console.log(response.data);
+    console.log(response);
     setTemp(response.data);
   } catch (error) {
     console.error("Failed to fetch temperature data:", error);
   }
 };
 
-export { startCamera, loadImage, tempData };
+export { startCamera, loadImage, getData };

@@ -21,7 +21,7 @@ export const Data = styled.div`
   background-image: url("img/memo2.jpg");
   background-size: 10px;
   z-index: 2;
-  top: 90vh;
+  top: 70vh;
   left: 10vw;
   position: absolute;
   color: black;
@@ -38,6 +38,21 @@ export const Back = styled(Link)`
 
 export const Poke = styled.img`
   position: absolute;
-  top: 80vh;
+  top: 70vh;
   right: 10vw;
+`;
+
+export const Capture = styled.button`
+  position: absolute;
+  top: 85%;
+  left: 47%;
+  width: 10%;
+  height: 7%;
+  border-radius: 100%;
+  /* color: white; */
+  font-size: 30px;
+  text-align: center;
+  &:hover {
+    /* color:  */
+  }
 `;

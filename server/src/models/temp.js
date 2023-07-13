@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const tempSchema = new mongoose.Schema(
   {
-    Temp: {
+    type: {
       type: String,
       required: true,
     },
-    Humidity: {
+    value: {
       type: String,
       required: true,
     },
@@ -16,6 +16,6 @@ const tempSchema = new mongoose.Schema(
   }
 );
 
-const Temp = mongoose.model("sensor", tempSchema);
+const Temp = mongoose.model("test_temp", tempSchema);
 
 module.exports = Temp;
