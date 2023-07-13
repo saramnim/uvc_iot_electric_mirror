@@ -23,7 +23,7 @@ const startCamera = (videoRef, setImage) => {
 
 const loadImage = async (setImage) => {
   try {
-    const response = await fetch("/logo.png");
+    const response = await fetch("/picure.jpg");
     const blob = await response.blob();
     setImage(URL.createObjectURL(blob));
   } catch (error) {
@@ -31,9 +31,9 @@ const loadImage = async (setImage) => {
   }
 };
 
-const tempData = async (setTemp) => {
+const getData = async (setTemp) => {
   try {
-    const response = await axios.get("/temp");
+    const response = await axios.get("http://localhost:8081/temp");
     console.log(response);
     setTemp(response.data);
   } catch (error) {
@@ -41,4 +41,4 @@ const tempData = async (setTemp) => {
   }
 };
 
-export { startCamera, loadImage, tempData };
+export { startCamera, loadImage, getData };
