@@ -10,48 +10,55 @@ import {
 } from "../styles/camera";
 import HomePage from "./Home";
 import { loadImage, startCamera, getData } from "../services/cameraService";
-// import { getGif } from "../services/pokemon";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import html2canvas from "html2canvas";
 import saveAs from "file-saver";
-// import io from "socket.io-client";
-
-// const socket = io("http://localhost:8000");
+import { pokeIf } from "../util/pokeIf";
 
 const Camera = () => {
   const videoRef = useRef(null);
-  // const canvasRef = useRef(null);
   const [data, setData] = useState([]);
   const [poke, setPoke] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    getData(setData);
+  }, []);
+
+  const temp = data.length > 1 ? data[1].value : 0;
+  const humi = data.length > 0 ? data[0].value : 0;
+  // const temp = 30;
+  // const humi = 10;
 
   useEffect(() => {
     const fetchPoke = async () => {
       try {
-        // const pokeImg = await getGif();
-        const randomIndex = Math.floor(Math.random() * 649);
-        const pokeImg = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${randomIndex}.gif`;
+        // const randomIndex = Math.floor(Math.random() * 649);
+        const randomIndex = pokeIf(temp, humi);
+        // const pokeImg = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${randomIndex}.gif`;
+        const pokeImg = `gif/${randomIndex}.gif`;
         setPoke(pokeImg);
-        // const playStream = (stream) => {
-        //   if (videoRef.current) {
-        //     videoRef.current.srcObject = stream;
-        //     videoRef.current.play();
-        //   }
-        // };
-        // socket.on("stream", (stream) => {
-        //   playStream(stream);
-        // });
-
-        // return () => {
-        //   socket.off("stream");
-        // };
       } catch (e) {
         console.error(e);
       }
     };
-    fetchPoke();
-    getData(setData);
-  }, []);
+    const fetchData = async () => {
+      try {
+        await getData(setData);
+        setIsLoading(false);
+        fetchPoke();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [temp, humi]);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // 로딩 상태를 표시하는 컴포넌트를 반환
+  }
 
   const captureImage = () => {
     const capture = document.querySelector("#capture");
@@ -74,12 +81,12 @@ const Camera = () => {
         <VideoBox>
           <Video autoPlay playsInline src="video/video1.mp4" type="video/mp4" />
           {/* <video ref={videoRef} autoPlay playsInline /> */}
-          <Poke src={poke} alt="poke" sizes="150px" />
+          <Poke id="poke" src={poke} alt="poke" sizes="150px" />
           <Data>
             우리집 <br />
-            온도 = {data[1].value}
+            온도 = {temp}
             <br />
-            습도 = {data[0].value}
+            습도 = {humi}
           </Data>
         </VideoBox>
       </Container>

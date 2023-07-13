@@ -32,14 +32,19 @@ const weatherUtil = {
         },
       });
       const weatherData = response.data.response?.body?.items?.item;
-      weatherData.forEach((v) => {
-        if (result[v.category] !== undefined) {
-          result[v.category].push(v);
-        } else {
-          result[v.category] = [v];
-        }
-      });
-    } catch (err) {}
+      if (weatherData) {
+        weatherData.forEach((v) => {
+          if (result[v.category] !== undefined) {
+            result[v.category].push(v);
+          } else {
+            result[v.category] = [v];
+          }
+        });
+      }
+    } catch (err) {
+      console.error("Error fetching weather data:", err);
+    }
+    console.log(result);
     return { result };
   },
   dfs_xy_conv(code, v1, v2) {
