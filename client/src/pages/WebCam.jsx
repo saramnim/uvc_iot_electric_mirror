@@ -1,40 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Webcam from "react-webcam";
+import html2canvas from "html2canvas";
+import saveAs from "file-saver";
 import {
   Back,
+  Capture,
   Container,
-  VideoBox,
-  Stream,
   Data,
   Poke,
   Talk,
+  VideoBox,
 } from "../styles/camera";
 import HomePage from "./Home";
-import { getData } from "../services/cameraService";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { pokeIf } from "../util/pokeIf";
+import { getData } from "../services/cameraService";
 import Loading from "../components/Loading";
 
-const Camera = () => {
+const Web = () => {
   const [data, setData] = useState([]);
   const [poke, setPoke] = useState("");
-  const [filter, setFilter] = useState("`");
   const [isLoading, setIsLoading] = useState(true);
   const [talk, setTalk] = useState("");
 
   const temp = data.length > 1 ? data[1].value : 0;
   const humi = data.length > 0 ? data[0].value : 0;
-
   useEffect(() => {
     const fetchPoke = async () => {
       try {
         const randomIndex = pokeIf(temp, humi);
         const pokeImg = `gif/${randomIndex[0]}.gif`;
         const tell = randomIndex[1];
-        const backimg = randomIndex[2];
         setPoke(pokeImg);
         setTalk(tell);
-        setFilter(backimg);
         console.log(pokeIf(temp, humi, setPoke, setTalk));
       } catch (e) {
         console.error(e);
@@ -56,21 +55,34 @@ const Camera = () => {
   if (isLoading) {
     return <Loading />;
   }
-
+  const captureImage = () => {
+    const capture = document.querySelector("#capture");
+    html2canvas(capture).then((canvas) => {
+      canvas.toBlob((blob) => {
+        saveAs(blob, "captured-image.png");
+      });
+    });
+    // window.location.href = "/webcam";
+  };
   return (
-    <div>
-      <Container>
+    <Container>
+      <div id="capture">
         <Back to="/" element={<HomePage />}>
           <FontAwesomeIcon icon={faArrowLeft} />
         </Back>
         <VideoBox>
-          <Stream
-            src="http://192.168.0.72:8000/stream.mjpg"
-            alt="Server Image"
-            style={{ filter }} // 동적으로 설정한 필터를 스타일 속성에 적용합니다.
+          <Webcam
+            id="webcam"
+            audio={false}
+            mirrored={true}
+            style={{
+              width: "100%",
+              height: "100%",
+              //   transform: "rotateY(180deg)",
+            }}
           />
           <Poke id="poke" src={poke} alt="poke" sizes="150px" />
-          <Talk className="camera">{talk}</Talk>
+          <Talk>{talk}</Talk>
           <Data>
             지금 우리집 <br />
             온도 = {temp}
@@ -78,9 +90,10 @@ const Camera = () => {
             습도 = {humi}
           </Data>
         </VideoBox>
-      </Container>
-    </div>
+      </div>
+      <Capture onClick={captureImage}>●</Capture>
+    </Container>
   );
 };
 
-export default Camera;
+export default Web;

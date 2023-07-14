@@ -8,9 +8,16 @@ export const VideoBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100vh;
+  &.webcam {
+    /* transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg); */
+    transform: scale(-1);
+  }
 `;
 
-export const Video = styled.img`
+export const Stream = styled.img`
   width: 100%;
   height: 100vh;
 `;
@@ -47,7 +54,7 @@ export const Capture = styled.button`
   left: 47%;
   width: 10%;
   height: 7%;
-  border-radius: 100%;
+  border-radius: 100px;
   font-size: 30px;
   text-align: center;
 `;
@@ -57,4 +64,9 @@ export const Talk = styled.div`
   position: absolute;
   font-size: 20px;
   top: 20%;
+  &.camera {
+    top: 90%;
+    left: 10%;
+    color: black;
+  }
 `;
