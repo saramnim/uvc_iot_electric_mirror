@@ -1,5 +1,6 @@
 import HomePage from "../pages/Home";
 import Camera from "../pages/Camera";
+import Web from "../pages/WebCam";
 
 export const ROUTE = {
   HOME: {
@@ -7,10 +8,15 @@ export const ROUTE = {
     link: "/",
     element: HomePage,
   },
-  Camera: {
+  CAMERA: {
     path: "/camera",
     link: "/camera",
     element: Camera,
+  },
+  WEB: {
+    path: "/webcam",
+    link: "/webcam",
+    element: Web,
   },
 };
 

@@ -1,33 +1,33 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 export const Container = styled.div`
-  /* height: 100vh; */
   color: white;
 `;
 
-// export const Video = styled.div`
-//   width: 100%;
-//   height: 100%;
-//   background-color: white;
-// `;
-
 export const VideoBox = styled.div`
-  /* background-color: white; */
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100vh;
+  &.webcam {
+    /* transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg); */
+    transform: scale(-1);
+  }
 `;
 
-export const Video = styled.video`
+export const Stream = styled.img`
   width: 100%;
   height: 100vh;
 `;
 
 export const Data = styled.div`
-  background-image: url("img/memo2.jpg");
+  /* background-image: url("img/memo2.jpg"); */
+  font-size: 25px;
   background-size: 10px;
   z-index: 2;
-  top: 70vh;
+  top: 75vh;
   left: 10vw;
   position: absolute;
   color: black;
@@ -44,8 +44,8 @@ export const Back = styled(Link)`
 
 export const Poke = styled.img`
   position: absolute;
-  top: 70vh;
-  right: 10vw;
+  top: 75vh;
+  right: 15vw;
 `;
 
 export const Capture = styled.button`
@@ -54,11 +54,19 @@ export const Capture = styled.button`
   left: 47%;
   width: 10%;
   height: 7%;
-  border-radius: 100%;
-  /* color: white; */
+  border-radius: 100px;
   font-size: 30px;
   text-align: center;
-  &:hover {
-    /* color:  */
+`;
+
+export const Talk = styled.div`
+  background-image: url("img/talk.jpg");
+  position: absolute;
+  font-size: 20px;
+  top: 20%;
+  &.camera {
+    top: 90%;
+    left: 10%;
+    color: black;
   }
 `;

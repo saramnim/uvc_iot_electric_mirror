@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { URL, Title } from "../styles/home";
+import { Container, URL, Title } from "../styles/home";
 import Camera from "./Camera";
 import { getData } from "../services/weather";
+import Loading from "../components/Loading";
+import Web from "./WebCam";
 
 const HomePage = () => {
   const [weather, setWeather] = useState(null);
@@ -26,22 +28,27 @@ const HomePage = () => {
   }, [TMP, PTY, POP]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
-    <URL to="/camera" element={<Camera />}>
-      <Title>화면을 클릭해주세요.</Title>
-      {TMP && (
-        <div>
-          <h2>Current Weather</h2>
-          <h3>현재 바깥 온도: {TMP}</h3>
-          <h3>
-            현재 강수 확률: {PTY}가 {POP}%
-          </h3>
-        </div>
-      )}
-    </URL>
+    <Container>
+      <URL to="/camera" element={<Camera />}>
+        <Title>우리집 확인하기</Title>
+        {TMP && (
+          <div>
+            <h2>Current Weather</h2>
+            <h3>현재 바깥 온도: {TMP}</h3>
+            <h3>
+              현재 강수 확률: {PTY}가 {POP}%
+            </h3>
+          </div>
+        )}
+      </URL>
+      <URL to="/webcam" element={<Web />}>
+        <Title>내 캠으로 포켓몬과 사진찍기</Title>
+      </URL>
+    </Container>
   );
 };
 
