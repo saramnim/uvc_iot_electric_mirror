@@ -1,4 +1,3 @@
-import socketIOClient from "socket.io-client";
 import axios from "axios";
 
 const getData = async (setTemp) => {

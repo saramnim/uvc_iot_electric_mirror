@@ -142,6 +142,7 @@ body {
   height: 100%;
   font-family: "Dongle", sans-serif;
   font-family: "Nanum Pen Script", cursive;
+  overflow: hidden;
 }
 a {
   text-decoration: none;
