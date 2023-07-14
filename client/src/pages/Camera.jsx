@@ -6,21 +6,19 @@ import {
   Video,
   Data,
   Poke,
-  Capture,
   Talk,
 } from "../styles/camera";
 import HomePage from "./Home";
 import { getData } from "../services/cameraService";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import html2canvas from "html2canvas";
-import saveAs from "file-saver";
 import { pokeIf } from "../util/pokeIf";
 import Loading from "../components/Loading";
 
 const Camera = () => {
   const [data, setData] = useState([]);
   const [poke, setPoke] = useState("");
+  const [filter, setFilter] = useState("`");
   const [isLoading, setIsLoading] = useState(true);
   const [talk, setTalk] = useState("");
 
@@ -33,8 +31,10 @@ const Camera = () => {
         const randomIndex = pokeIf(temp, humi);
         const pokeImg = `gif/${randomIndex[0]}.gif`;
         const tell = randomIndex[1];
+        const backimg = randomIndex[2];
         setPoke(pokeImg);
         setTalk(tell);
+        setFilter(backimg);
         console.log(pokeIf(temp, humi, setPoke, setTalk));
       } catch (e) {
         console.error(e);
@@ -57,21 +57,11 @@ const Camera = () => {
     return <Loading />;
   }
 
-  const captureImage = () => {
-    const capture = document.querySelector("#capture");
-    // capture.style.width = "1000px";
-    // capture.style.height = "1024px";
-    html2canvas(capture).then((canvas) => {
-      canvas.toBlob((blob) => {
-        saveAs(blob, "captured-image.png");
-      });
-    });
-    capture.style.width = "auto";
-  };
-
+  // 필터를 동적으로 설정할 수 있도록 변수를 선언합니다.
+  // 온도에 따라 필터를 설정합니다.
   return (
     <div>
-      <Container id="capture">
+      <Container>
         <Back to="/" element={<HomePage />}>
           <FontAwesomeIcon icon={faArrowLeft} />
         </Back>
@@ -79,6 +69,7 @@ const Camera = () => {
           <Video
             src="http://192.168.0.72:8000/stream.mjpg"
             alt="Server Image"
+            style={{ filter }} // 동적으로 설정한 필터를 스타일 속성에 적용합니다.
           />
           <Poke id="poke" src={poke} alt="poke" sizes="150px" />
           <Talk>{talk}</Talk>
@@ -90,7 +81,6 @@ const Camera = () => {
           </Data>
         </VideoBox>
       </Container>
-      <Capture onClick={captureImage}>●</Capture>
     </div>
   );
 };
