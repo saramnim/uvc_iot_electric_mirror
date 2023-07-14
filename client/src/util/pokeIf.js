@@ -17,6 +17,7 @@ export const pokeIf = (temperature, humidity, setPoke, setFilter, setTalk) => {
       setTalk = "적당한 온도감이 좋아요! 집이 살짝 건조하네요! ㅇㅅㅇ";
     } else if (humidity >= 30 && humidity < 40) {
       console.log("구구");
+      setFilter = "contrast(200%)";
       setPoke = 16;
       setTalk = "적당한 온도감이 좋아요! 오늘은 운이 좋을 것 같아요 ^_^";
     } else if (humidity >= 40 && humidity < 50) {
@@ -43,19 +44,22 @@ export const pokeIf = (temperature, humidity, setPoke, setFilter, setTalk) => {
       setTalk = "따뜻한 날씨예요! 집이 살짝 건조하네요! ㅇㅅㅇ";
     } else if (humidity >= 30 && humidity < 40) {
       console.log("찌르꼬");
-
+      setFilter = "opacity(25%)";
       setPoke = 396;
       setTalk = "따뜻한 날씨예요! 오늘은 운이 좋을 것 같아요^_^";
     } else if (humidity >= 40 && humidity < 50) {
       console.log("모부기");
+      setFilter = "opacity(25%)";
       setPoke = 387;
       setTalk = "따뜻한 날씨예요! 식물이 잘 자라겠어요 ㅎㅅㅎ";
     } else if (humidity >= 50 && humidity < 60) {
       console.log("팽도리");
+      setFilter = "opacity(55%)";
       setPoke = 393;
       setTalk = "따뜻한 날씨예요! 집이 조금 습하네요! ㅍㅅㅍ";
     } else if (humidity >= 60) {
       console.log("비버니");
+      setFilter = "opacity(25%)";
       setPoke = 399;
       setTalk = "따뜻한 날씨예요! 집이 축축해요! 혹시 빨래를 하셨나요?";
     }
@@ -68,17 +72,21 @@ export const pokeIf = (temperature, humidity, setPoke, setFilter, setTalk) => {
     } else if (humidity >= 30 && humidity < 40) {
       console.log("아차모");
       setPoke = 255;
+      setFilter = "drop-shadow(16px 16px 20px blue)";
       setTalk = "더워요! 오늘은 운이 좋을 것 같아요^_^";
     } else if (humidity >= 40 && humidity < 50) {
       console.log("버섯꼬");
+      setFilter = "drop-shadow(16px 16px 20px blue)";
       setPoke = 285;
       setTalk = "더워요! 식물이 잘 자라겠어요 ㅎㅅㅎ";
     } else if (humidity >= 50 && humidity < 60) {
       console.log("물짱이");
+      setFilter = "drop-shadow(16px 16px 20px blue)";
       setPoke = 258;
       setTalk = "더워요! 집이 조금 습하네요! ㅍㅅㅍ";
     } else if (humidity >= 60) {
       console.log("질퍽이");
+      setFilter = "drop-shadow(16px 16px 20px blue)";
       setPoke = 88;
       setTalk = "더워요! 집이 축축해요! 어항 속에 갇힌 기분이네요 ㅠㅅㅠ";
     }

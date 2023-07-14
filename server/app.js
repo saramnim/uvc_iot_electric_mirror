@@ -32,7 +32,9 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((error) => console.error("Failed to connect to MongoDB:", error));
 
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(
+  cors({ origin: ["http://localhost:3000", "http://192.168.0.124:3000"] })
+);
 app.use(express.json());
 app.use("/save", saveRouter);
 app.use(bodyParser.json());

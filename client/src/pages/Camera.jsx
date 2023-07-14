@@ -67,7 +67,7 @@ const Camera = () => {
           <Stream
             src="http://192.168.0.72:8000/stream.mjpg"
             alt="Server Image"
-            style={{ filter }} // 동적으로 설정한 필터를 스타일 속성에 적용합니다.
+            style={{ filter }}
           />
           <Poke id="poke" src={poke} alt="poke" sizes="150px" />
           <Talk className="camera">{talk}</Talk>

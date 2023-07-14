@@ -23,6 +23,7 @@ const Web = () => {
   const [poke, setPoke] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [talk, setTalk] = useState("");
+  const [filter, setFilter] = useState("`");
 
   const temp = data.length > 1 ? data[1].value : 0;
   const humi = data.length > 0 ? data[0].value : 0;
@@ -32,9 +33,11 @@ const Web = () => {
         const randomIndex = pokeIf(temp, humi);
         const pokeImg = `gif/${randomIndex[0]}.gif`;
         const tell = randomIndex[1];
+        const backimg = randomIndex[2];
         setPoke(pokeImg);
         setTalk(tell);
-        console.log(pokeIf(temp, humi, setPoke, setTalk));
+        setFilter(backimg);
+        console.log(pokeIf(temp, humi, setPoke, setTalk, setFilter));
       } catch (e) {
         console.error(e);
       }
@@ -79,6 +82,7 @@ const Web = () => {
               width: "100%",
               height: "100%",
               //   transform: "rotateY(180deg)",
+              // filter,
             }}
           />
           <Poke id="poke" src={poke} alt="poke" sizes="150px" />

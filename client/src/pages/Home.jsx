@@ -1,31 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { Container, URL, Title } from "../styles/home";
+import { Container, Box, URL, Title, Weather } from "../styles/home";
 import Camera from "./Camera";
-import { getData } from "../services/weather";
+import { getTemp, getHumi } from "../services/weather";
 import Loading from "../components/Loading";
 import Web from "./WebCam";
 
 const HomePage = () => {
-  const [weather, setWeather] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [temp, setTemp] = useState(null);
+  const [humi, setHumi] = useState(null);
 
   useEffect(() => {
-    getData(setWeather);
-  }, []);
-  const TMP = weather ? weather.TMP?.[0]?.fcstValue : 0;
-  const PTY = weather ? weather.PTY?.[0]?.fcstValue : 0;
-  const POP = weather ? weather.POP?.[0]?.fcstValue : 0;
-  useEffect(() => {
-    const fetchWeather = async () => {
+    const fetchData = async () => {
       try {
-        await getData(setWeather);
+        const temp = await getTemp();
+        setTemp(temp);
+        const humi = await getHumi();
+        setHumi(humi);
         setIsLoading(false);
       } catch (error) {
-        console.error("Error fetching weather data:", error);
+        console.error(error);
+        setIsLoading(false);
       }
     };
-    fetchWeather();
-  }, [TMP, PTY, POP]);
+    fetchData();
+  }, []);
 
   if (isLoading) {
     return <Loading />;
@@ -33,21 +32,21 @@ const HomePage = () => {
 
   return (
     <Container>
-      <URL to="/camera" element={<Camera />}>
-        <Title>우리집 확인하기</Title>
-        {TMP && (
-          <div>
-            <h2>Current Weather</h2>
-            <h3>현재 바깥 온도: {TMP}</h3>
-            <h3>
-              현재 강수 확률: {PTY}가 {POP}%
-            </h3>
-          </div>
-        )}
-      </URL>
-      <URL to="/webcam" element={<Web />}>
-        <Title>내 캠으로 포켓몬과 사진찍기</Title>
-      </URL>
+      <Box>
+        <Weather>
+          <h2>오늘 날씨</h2>
+          <h3>현재 바깥 온도: {temp}</h3>
+          <h3>현재 바깥 습도: {humi}%</h3>
+        </Weather>
+      </Box>
+      <Box>
+        <URL to="/camera" element={<Camera />}>
+          <Title>우리집 확인하기</Title>
+        </URL>
+        <URL to="/webcam" element={<Web />}>
+          <Title>내 캠으로 포켓몬과 사진찍기</Title>
+        </URL>
+      </Box>
     </Container>
   );
 };

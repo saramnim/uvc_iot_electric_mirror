@@ -17,5 +17,16 @@ const getData = async (setWeather) => {
     console.error("Failed to fetch temperature data:", error);
   }
 };
-
-export { getData };
+const getTemp = async () => {
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=Seoul&appid=aa187983fd61ec47f96a4d448ba1bbb2`;
+  const res = await axios.get(url);
+  console.log(res.data.main.temp);
+  return res.data.main.temp;
+};
+const getHumi = async () => {
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=Seoul&appid=aa187983fd61ec47f96a4d448ba1bbb2`;
+  const res = await axios.get(url);
+  console.log(res.data.main.humidity);
+  return res.data.main.humidity;
+};
+export { getData, getTemp, getHumi };
